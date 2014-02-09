@@ -122,7 +122,9 @@ def signup():
 @app.route('/signout', methods=['GET'])
 def signout():
   """Logs the user out."""
-  return render_template('signout.html')
+  flash('You were logged out')
+  session.pop('user_id', None)
+  return redirect(url_for('index'))
 
 if __name__ == '__main__':
   app.run()
