@@ -27,9 +27,24 @@
             </div>
           </div>
 
-          <div class="inner cover">
-            <h1 class="cover-heading">ToDo</h1>
-            <p class="lead">A simple task management app.</p>
+          <div class="panel-body">
+            <h1>Sign in</h1>
+            {% if error %}<div class=error>{{ error }}</div>{% endif %}</br>
+            <form role="form" method="post">
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="text" name="email" class="form-control input-sm" placeholder="Email address">
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="form-group">
+                  <input type="password" name="password" class="form-control input-sm" placeholder="Password">
+                </div>
+              </div>
+              
+              <input type="submit" value="" class="img-submit">
+            
+            </form>
           </div>
 
           <div class="mastfoot">

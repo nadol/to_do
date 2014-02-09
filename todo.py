@@ -1,6 +1,8 @@
 import os
+import time
 from sqlite3 import dbapi2 as sqlite3
 from hashlib import md5
+from datetime import datetime
 from flask import Flask, request, session, url_for, redirect, \
      render_template, abort, g, flash, _app_ctx_stack
 from werkzeug import check_password_hash, generate_password_hash
@@ -67,10 +69,25 @@ def index():
   """Controller handling the main page request"""
   return render_template('index.html')
 
-@app.route('/signin')
+@app.route('/signin', methods=['GET', 'POST'])
 def signin():
   """Logs the user in."""
-  return render_template('signin.html') 
+  if g.user:
+    return redirect(url_for('index'))
+  error = None
+  if request.method == 'POST':
+    user = query_db('''select * from user where
+        email = ?''', [request.form['email']], one=True)
+    if user is None:
+        error = 'Invalid email'
+    elif not check_password_hash(user['pw_hash'],
+                                 request.form['password']):
+      error = 'Invalid password'
+    else:
+      flash('You were logged in')
+      session['user_id'] = user['user_id']
+      return redirect(url_for('index'))
+  return render_template('signin.html', error=error)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -101,6 +118,11 @@ def signup():
       flash('You were successfully registered and can login now')
       return redirect(url_for('signin'))
   return render_template('signup.html', error=error)
+
+@app.route('/signout', methods=['GET'])
+def signout():
+  """Logs the user out."""
+  return render_template('signout.html')
 
 if __name__ == '__main__':
   app.run()

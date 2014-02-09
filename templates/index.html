@@ -21,8 +21,8 @@
               <h3 class="masthead-brand">ToDo</h3>
               <ul class="nav masthead-nav">
                 {% if g.user %}
-                  <li>[{{ g.user.username }}]</li>
-                  <a href="{{ url_for('signout') }}">Sign out</a>
+                  <li><a href="#">{{ g.user.first_name }}</a></li>
+                  <li><a href="/signout">Sign out</a></li>
                 {% else %}
                   <li class="active"><a href="/">Home</a></li>
                   <li><a href="/signin">Sign in</a></li>
