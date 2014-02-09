@@ -28,8 +28,9 @@
           </div>
 
           <div class="panel-body">
-            <h1>Registration</h1></br></br></br>
-            <form role="form">
+            <h1>Registration</h1>
+            {% if error %}<div class=error>{{ error }}</div>{% endif %}</br>
+            <form role="form" method="post">
               <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6">
                   <div class="form-group">
