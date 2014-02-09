@@ -118,3 +118,19 @@ body {
     width: 700px;
   }
 }
+
+/*
+ * Submit image
+ */
+
+.img-submit { 
+    background-image: url('/static/img/submit.jpg');
+    background-position:  0px 0px;
+    background-repeat: no-repeat;
+    width: 56px;
+    height: 56px;
+    border: 0px;
+    background-color: none;
+    cursor: pointer;
+    outline: 0;
+}

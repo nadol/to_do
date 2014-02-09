@@ -18,3 +18,10 @@ def page_not_found(e):
 def index():
   """ Controller handling the main page request """
   return render_template('index.html')
+
+@app.route('/signup')
+def signup():
+  return render_template('signup.html')
+
+if __name__ == '__main__':
+  app.run()
