@@ -1,62 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
+{% extends "layout.html" %}
 
-    <title>ToDo - task management</title>
-
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/home.css" rel="stylesheet">
-  </head>
-
-  <body>
-    <div class="site-wrapper">
-
-      <div class="site-wrapper-inner">
-
-        <div class="cover-container">
-
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand">ToDo</h3>
-              <ul class="nav masthead-nav">
-                <li><a href="/">Home</a></li>
-                <li class="active"><a href="/signin">Sign in</a></li>
-                <li><a href="/signup">Sign up</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="panel-body">
-            <h1>Sign in</h1>
-            {% if error %}<div class=error>{{ error }}</div>{% endif %}</br>
-            <form role="form" method="post">
-              <div class="col-xs-6 col-sm-6 col-md-6">
-                <div class="form-group">
-                  <input type="text" name="email" class="form-control input-sm" placeholder="Email address">
-                </div>
-              </div>
-              <div class="col-xs-6 col-sm-6 col-md-6">
-                <div class="form-group">
-                  <input type="password" name="password" class="form-control input-sm" placeholder="Password">
-                </div>
-              </div>
-              
-              <input type="submit" value="" class="img-submit">
-            
-            </form>
-          </div>
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>By Mateusz Nadolski</p>
-            </div>
-          </div>
-
+{% block body %}
+  <div class="panel-body">
+    <h1>Sign in</h1>
+    {% if error %}<div class=error>{{ error }}</div>{% endif %}</br>
+    <form role="form" method="post">
+      <div class="col-xs-6 col-sm-6 col-md-6">
+        <div class="form-group">
+          <input type="text" name="email" class="form-control input-sm" placeholder="Email address">
         </div>
-
       </div>
+      <div class="col-xs-6 col-sm-6 col-md-6">
+        <div class="form-group">
+          <input type="password" name="password" class="form-control input-sm" placeholder="Password">
+        </div>
+      </div>
+      
+      <input type="submit" value="" class="img-submit">
+    
+    </form>
+  </div>
+{% endblock %}
 
-    </div>
-  </body>
-</html>

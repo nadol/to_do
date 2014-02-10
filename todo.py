@@ -119,7 +119,7 @@ def signup():
       return redirect(url_for('signin'))
   return render_template('signup.html', error=error)
 
-@app.route('/signout', methods=['GET'])
+@app.route('/signout')
 def signout():
   """Logs the user out."""
   flash('You were logged out')
