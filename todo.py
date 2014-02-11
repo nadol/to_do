@@ -33,15 +33,15 @@ def get_db():
 
 def get_user_id(email):
     """Convenience method to look up the id for a email"""
-    rv = query_db('select user_id from user where email = ?',
+    rv = query_db('select id from user where email = ?',
                   [email], one=True)
     return rv[0] if rv else None
 
 @app.before_request
 def before_request():
   g.user = None
-  if 'user_id' in session:
-    g.user = query_db('select * from user where user_id = ?', [session['user_id']], one=True)
+  if 'id' in session:
+    g.user = query_db('select * from user where id = ?', [session['id']], one=True)
 
 
 @app.teardown_appcontext
@@ -84,7 +84,7 @@ def signin():
                                  request.form['password']):
       error = 'Invalid password'
     else:
-      session['user_id'] = user['user_id']
+      session['id'] = user['id']
       return redirect(url_for('projects_list'))
   return render_template('signin.html', error=error)
 
@@ -92,7 +92,7 @@ def signin():
 def signup():
   """Registers the user."""
   if g.user:
-    return redirect(url_for('index'))
+    return redirect(url_for('projects_list'))
   error = None
   if request.method == 'POST':
     if not request.form['first_name']:
@@ -112,7 +112,7 @@ def signup():
       db.execute('''insert into user (
         first_name, last_name, email, pw_hash) values (?, ?, ?, ?)''',
         [request.form['first_name'], request.form['last_name'], request.form['email'],
-         generate_password_hash(request.form['password'])])
+        generate_password_hash(request.form['password'])])
       db.commit()
       flash('You were successfully registered and can login now')
       return redirect(url_for('signin'))
@@ -122,7 +122,7 @@ def signup():
 def signout():
   """Logs the user out."""
   flash('You were logged out')
-  session.pop('user_id', None)
+  session.pop('id', None)
   return redirect(url_for('index'))
 
 @app.route('/projects_list')
@@ -130,6 +130,21 @@ def projects_list():
   """Shows the user's projects"""
   return render_template('projects_list.html')
 
+@app.route('/add_project', methods=['GET', 'POST'])
+def add_project():
+  """Adds the new project"""
+  error = None
+  if request.method == 'POST':
+    if not request.form['name']:
+      error = 'You have to enter the project title'
+    else:
+      db = get_db()
+      db.execute('''insert into project (
+        user_id, name, description, status) values (?, ?, ?, ?)''',
+        [session['id'], request.form['name'], request.form['description'], 0])
+      db.commit()
+      return redirect(url_for('projects_list'))
+  return render_template('add_project.html', error=error)
 
 if __name__ == '__main__':
   app.run()

@@ -130,19 +130,30 @@ body {
 }
 
 /*
- * Submit image
+ * Image buttons
  */
 
 .img-submit { 
-    background-image: url('/static/img/submit.jpg');
-    background-position:  0px 0px;
-    background-repeat: no-repeat;
-    width: 56px;
-    height: 56px;
-    border: 0px;
-    background-color: none;
-    cursor: pointer;
-    outline: 0;
+  background-image: url('/static/img/submit.jpg');
+  background-position:  0px 0px;
+  background-repeat: no-repeat;
+  width: 56px;
+  height: 56px;
+  border: 0px;
+  background-color: none;
+  cursor: pointer;
+  outline: 0;
+}
+
+.control-image {
+  width: 40px;
+  height: 40px;
+  border: 0px;
+  background-color: none;
+  cursor: pointer;
+  outline: 0;
+  float: left;
+  margin-bottom: 30px;
 }
 
 /*
