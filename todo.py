@@ -128,7 +128,8 @@ def signout():
 @app.route('/projects_list')
 def projects_list():
   """Shows the user's projects"""
-  return render_template('projects_list.html')
+  projects = query_db('select * from project where user_id = ?', [session['id']])
+  return render_template('projects_list.html', projects = projects)
 
 @app.route('/add_project', methods=['GET', 'POST'])
 def add_project():

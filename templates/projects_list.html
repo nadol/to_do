@@ -1,5 +1,29 @@
 {% extends "layout.html" %}
 
 {% block body %}
+  <div class="row">
+    <a href="{{ url_for('add_project') }}"><img class="control-image" src="/static/img/add.jpg" /></a>
+  </div>  
+  <div class="row">
+    {% for project in projects %}
+      <div class="col-sm-3">
+        <div class="tile-progress tile-red">
+          <div class="tile-header">
+            <h3>{{project.name}}</h3>
+            <span>{{project.description}}</span>
+          </div>
+          <div class="tile-progressbar">
+            <span data-fill="65.5%" style="width: 65.5%;"></span>
+          </div>
+          <div class="tile-footer">
+            <h4>
+              <span class="pct-counter">65.5</span>% increase
+            </h4>
+            <span>so far in our blog and our website</span>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+  </div>  
 {% endblock %}
 
