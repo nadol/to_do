@@ -2,6 +2,15 @@
  * Base structure
  */
 
+a {
+  color: white;
+}
+
+a:hover {
+  text-decoration: none;
+  color: white;
+}
+
 html,
 body {
   height: 100%;

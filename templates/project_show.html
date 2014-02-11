@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <div class="container">
+    <div class="row clearfix">
+      <div class="col-sm-6">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">
+                #
+              </th>
+              <th class="text-center">
+                Name
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in tasks %}
+              <tr>
+                <td>
+                  1
+                </td>
+                <td>
+                  {{task.name}}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <a href="{{ url_for('add_task', project_id=project_id) }}"><img class="pull-left control-image" src="/static/img/add.jpg" /></a>
+  </div>
+{% endblock %}
+

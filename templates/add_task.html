@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <h1 class="cover-heading">Add new task</h1>
+  {% if error %}<div class=error>{{ error }}</div>{% endif %}</br>
+  <form role="form" method="post">
+    <div class="form-group">
+      <input type="text" name="name" class="form-control input-sm" placeholder="Task description">
+    </div>   
+    <input type="submit" value="" class="img-submit">
+  
+  </form>
+{% endblock %}

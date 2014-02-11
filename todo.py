@@ -67,6 +67,8 @@ def page_not_found(e):
 @app.route('/index')
 def index():
   """Controller handling the main page request"""
+  if g.user:
+    return redirect(url_for('projects_list'))
   return render_template('index.html')
 
 @app.route('/signin', methods=['GET', 'POST'])
@@ -129,7 +131,7 @@ def signout():
 def projects_list():
   """Shows the user's projects"""
   projects = query_db('select * from project where user_id = ?', [session['id']])
-  return render_template('projects_list.html', projects = projects)
+  return render_template('projects_list.html', projects=projects)
 
 @app.route('/add_project', methods=['GET', 'POST'])
 def add_project():
@@ -146,6 +148,29 @@ def add_project():
       db.commit()
       return redirect(url_for('projects_list'))
   return render_template('add_project.html', error=error)
+
+@app.route('/<project_id>/show')
+def show_project(project_id):
+  """Shows the current project tasks"""
+  tasks = query_db('select * from task where project_id = ?', [project_id])
+  return render_template('project_show.html', project_id=project_id, tasks=tasks)
+
+@app.route('/<project_id>/add_task', methods=['GET', 'POST'])
+def add_task(project_id):
+  """Adds the new task to current project"""
+  error = None
+  if request.method == 'POST':
+    if not request.form['name']:
+      error = 'You have to enter the task description'
+    else:
+      db = get_db()
+      db.execute('''insert into task (
+        project_id, name, status) values (?, ?, ?)''',
+        [project_id, request.form['name'], 0])
+      db.commit()
+      return redirect(url_for('show_project', project_id=project_id))
+  return render_template('add_task.html', error=error)
+
 
 if __name__ == '__main__':
   app.run()

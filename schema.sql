@@ -7,10 +7,19 @@ create table user (
   pw_hash text not null
 );
 
+drop table if exists project;
 create table project (
   id integer primary key autoincrement,
   user_id integer not null,
   name text not null,
   description text,
+  status integer not null
+);
+
+drop table if exists task;
+create table task (
+  id integer primary key autoincrement,
+  project_id integer not null,
+  name text not null,
   status integer not null
 );
