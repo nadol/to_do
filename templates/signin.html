@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <div class="panel-body">
-    <h1>Sign in</h1>
+    <h1 class="cover-heading">Sign in</h1>
     {% if error %}<div class=error>{{ error }}</div>{% endif %}</br>
     <form role="form" method="post">
       <div class="col-xs-6 col-sm-6 col-md-6">
@@ -19,6 +18,5 @@
       <input type="submit" value="" class="img-submit">
     
     </form>
-  </div>
 {% endblock %}
 

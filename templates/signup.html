@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <div class="panel-body">
-    <h1>Registration</h1>
+    <h1 class="cover-heading">Registration</h1>
     {% if error %}<div class=error>{{ error }}</div>{% endif %}</br>
     <form role="form" method="post">
       <div class="row">
@@ -38,5 +37,4 @@
       <input type="submit" value="" class="img-submit">
     
     </form>
-  </div>
 {% endblock %}

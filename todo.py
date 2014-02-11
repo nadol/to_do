@@ -73,7 +73,7 @@ def index():
 def signin():
   """Logs the user in."""
   if g.user:
-    return redirect(url_for('index'))
+    return redirect(url_for('projects_list'))
   error = None
   if request.method == 'POST':
     user = query_db('''select * from user where
@@ -84,9 +84,8 @@ def signin():
                                  request.form['password']):
       error = 'Invalid password'
     else:
-      flash('You were logged in')
       session['user_id'] = user['user_id']
-      return redirect(url_for('index'))
+      return redirect(url_for('projects_list'))
   return render_template('signin.html', error=error)
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -125,6 +124,12 @@ def signout():
   flash('You were logged out')
   session.pop('user_id', None)
   return redirect(url_for('index'))
+
+@app.route('/projects_list')
+def projects_list():
+  """Shows the user's projects"""
+  return render_template('projects_list.html')
+
 
 if __name__ == '__main__':
   app.run()

@@ -1,4 +1,4 @@
-{%- from 'macros.html' import navlink -%}
+{%- from 'macros.html' import navlink with context -%}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -30,8 +30,8 @@
                   {{ navlink('signup','Sign up') }}
                 {% endif %}
               </ul>
-            </div>
-          </div>
+            </div><!--/.inner -->
+          </div><!--/.masthead clearfix -->
 
           {% with flashes = get_flashed_messages() %}
             {% if flashes %}
@@ -44,15 +44,13 @@
           {% block body %}{% endblock %}
 
           <div class="mastfoot">
-            <div class="inner">
               <p>By Mateusz Nadolski</p>
-            </div>
-          </div>
+          </div><!--/.mastfoot -->
 
-        </div>
+        </div><!--/.cover-container -->
 
-      </div>
+      </div><!--/.site-wrapper-inner -->
 
-    </div>
+    </div><!--/.site-wrapper -->
   </body>
 </html>
