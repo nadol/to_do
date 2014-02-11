@@ -22,7 +22,7 @@
               <h3 class="masthead-brand">ToDo</h3>
               <ul class="nav masthead-nav">
                 {% if g.user %}
-                  {{ navlink('index','Settings') }}
+                  {{ navlink('projects_list', 'Projects') }}
                   {{ navlink('signout','Sign out') }}
                 {% else %}
                   {{ navlink('index','Home') }}

@@ -15,13 +15,20 @@
             <span>{{project.description}}</span>
           </div>
           <div class="tile-progressbar">
-            <span data-fill="65.5%" style="width: 65.5%;"></span>
+            {% set progress = stats[project.id][2] %}
+            <span data-fill="{{progress}}%" style="width: {{progress}}%;"></span>
           </div>
           <div class="tile-footer">
             <h4>
-              <span class="pct-counter">65.5</span>% increase
+              <span class="pct-counter">
+                <center>{{ stats[project.id][0] }} / {{ stats[project.id][1] }}</center>
+              </span>
             </h4>
-            <span><center><img src="/static/img/remove-project.jpg" /></center></span>
+            <span><center>
+              <a href="{{ url_for('delete_project', project_id=project.id)}}">
+                <img src="/static/img/remove-project.jpg" />
+              </a>  
+             </center></span>   
           </div>
         </div>
     </div>

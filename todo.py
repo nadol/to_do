@@ -33,7 +33,7 @@ def get_db():
 
 def get_user_id(email):
     """Convenience method to look up the id for a email"""
-    rv = query_db('select id from user where email = ?',
+    rv = query_db('SELECT id FROM user WHERE email = ?',
                   [email], one=True)
     return rv[0] if rv else None
 
@@ -41,7 +41,7 @@ def get_user_id(email):
 def before_request():
   g.user = None
   if 'id' in session:
-    g.user = query_db('select * from user where id = ?', [session['id']], one=True)
+    g.user = query_db('SELECT * FROM user WHERE id = ?', [session['id']], one=True)
 
 
 @app.teardown_appcontext
@@ -78,7 +78,7 @@ def signin():
     return redirect(url_for('projects_list'))
   error = None
   if request.method == 'POST':
-    user = query_db('''select * from user where
+    user = query_db('''SELECT * FROM user WHERE
         email = ?''', [request.form['email']], one=True)
     if user is None:
         error = 'Invalid email'
@@ -129,9 +129,21 @@ def signout():
 
 @app.route('/projects_list')
 def projects_list():
-  """Shows the user's projects"""
-  projects = query_db('select * from project where user_id = ?', [session['id']])
-  return render_template('projects_list.html', projects=projects)
+  """Shows the user's projects with information about
+     done tasks, all tasks and overall progress.
+  """
+  projects = query_db('SELECT * FROM project WHERE user_id = ?', [session['id']])
+  stats = {}
+  for project in projects:
+    done_tasks = len(query_db('SELECT * FROM task WHERE project_id = ? and status = 1', [project['id']]))
+    all_tasks = len(query_db('SELECT * FROM task WHERE project_id = ?', [project['id']]))
+    if all_tasks != 0:
+      progress = done_tasks / float(all_tasks) * 100
+    else:
+      progress = 0
+    info = (done_tasks, all_tasks, progress)
+    stats[project['id']] = info
+  return render_template('projects_list.html', projects=projects, stats=stats)
 
 @app.route('/add_project', methods=['GET', 'POST'])
 def add_project():
@@ -152,8 +164,17 @@ def add_project():
 @app.route('/<project_id>/show')
 def show_project(project_id):
   """Shows the current project tasks"""
-  tasks = query_db('select * from task where project_id = ?', [project_id])
-  return render_template('project_show.html', project_id=project_id, tasks=tasks)
+  tasks = query_db('SELECT * FROM task WHERE project_id = ? and status = 0', [project_id])
+  done = query_db('SELECT * FROM task WHERE project_id = ? and status = 1', [project_id])
+  return render_template('project_show.html', project_id=project_id, tasks=tasks, done=done)
+
+@app.route('/<project_id>/delete')
+def delete_project(project_id):
+  """Deletes the project"""
+  db = get_db()
+  db.execute("DELETE FROM project WHERE id =%i" %(int(project_id)))
+  db.commit()
+  return redirect(url_for('projects_list'))
 
 @app.route('/<project_id>/add_task', methods=['GET', 'POST'])
 def add_task(project_id):
@@ -171,6 +192,35 @@ def add_task(project_id):
       return redirect(url_for('show_project', project_id=project_id))
   return render_template('add_task.html', error=error)
 
+@app.route('/<project_id>/<task_id>/edit_task', methods=['GET', 'POST'])
+def edit_task(project_id, task_id):
+  """Edits the task"""
+  error = None
+  if request.method == 'POST':
+    if not request.form['name']:
+      error = 'You have to enter the task description'
+    else:
+      db = get_db()
+      db.execute("UPDATE task SET name= ? WHERE id = ?", [str(request.form['name']), int(task_id)])
+      db.commit()
+      return redirect(url_for('show_project', project_id=project_id))
+  return render_template('edit_task.html', error=error)
+
+@app.route('/<project_id>/<task_id>/check_task')
+def check_task(project_id, task_id):
+  """Checks off the task"""
+  db = get_db()
+  db.execute("UPDATE task SET status=1 WHERE id =%i" %(int(task_id)))
+  db.commit()
+  return redirect(url_for('show_project', project_id=project_id))
+
+@app.route('/<project_id>/<task_id>/delete_task')
+def delete_task(project_id, task_id):
+  """Deletes the task"""
+  db = get_db()
+  db.execute("DELETE FROM task WHERE id =%i" %(int(task_id)))
+  db.commit()
+  return redirect(url_for('show_project', project_id=project_id))
 
 if __name__ == '__main__':
   app.run()

@@ -4,14 +4,15 @@
   <div class="container">
     <div class="row clearfix">
       <div class="col-sm-6">
+        <h2>To do:</h2>
         <table class="table">
           <thead>
             <tr>
               <th class="text-center">
-                #
+                Tasks
               </th>
               <th class="text-center">
-                Name
+                Actions
               </th>
             </tr>
           </thead>
@@ -19,8 +20,30 @@
             {% for task in tasks %}
               <tr>
                 <td>
-                  1
+                  {{task.name}}
                 </td>
+                <td>
+                  <a href="{{ url_for('edit_task', project_id=project_id, task_id=task.id) }}"><img src="/static/img/edit-small.jpg" /></a>
+                  <a href="{{ url_for('check_task', project_id=project_id, task_id=task.id) }}"><img src="/static/img/done-small.jpg" /></a>
+                  <a href="{{ url_for('delete_task', project_id=project_id, task_id=task.id) }}"><img src="/static/img/delete-small.jpg" /></a>
+                </td>  
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <a href="{{ url_for('add_task', project_id=project_id) }}"><img class="pull-left control-image" src="/static/img/add.jpg" /></a></br>
+        <h2>Done:</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">
+                Tasks
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for task in done %}
+              <tr>
                 <td>
                   {{task.name}}
                 </td>
@@ -30,8 +53,6 @@
         </table>
       </div>
     </div>
-
-    <a href="{{ url_for('add_task', project_id=project_id) }}"><img class="pull-left control-image" src="/static/img/add.jpg" /></a>
   </div>
 {% endblock %}
 
